@@ -27,7 +27,7 @@ svm.fit(X_train, y_train)
 svm.score(X_test, y_test)
 
 # open the file in the write mode
-with open('model_svm.csv', 'w', encoding='UTF8') as f:
+with open('model/model_svm.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
 

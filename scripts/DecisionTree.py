@@ -51,7 +51,7 @@ clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
 
 ## enregistrement de la normalisation
 # open the file in the write mode
-with open('model_DecisionTreeClassifier_ml.csv', 'w', encoding='UTF8') as f:
+with open('model/model_DecisionTreeClassifier_ml.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
     # write a row to the csv file
@@ -69,6 +69,12 @@ txt += lecture_node(0)
 txt += "}"
 
 # écriture du code dans le fichier
-fichier = open("src/code.cpp", "w")
+fichier = open("model/code.cpp", "w")
+fichier.write(txt)
+fichier.close()
+
+## ecriture du h
+txt = "#ifndef CODE__H \n#define CODE__H \nint decision_tree(double mu[], double sigma[]);\n#endif"
+fichier = open("model/code.h", "w")
 fichier.write(txt)
 fichier.close()
