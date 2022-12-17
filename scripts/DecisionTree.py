@@ -29,7 +29,9 @@ def lecture_node(i):
 
 
 ## lecture du fichier contenant les descripteurs
-with open('../archive/output/output3.csv', newline='') as csvfile:
+
+# extraction des informations du csv
+with open('archive/output/output3.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
 data = np.array(data)
 
@@ -46,6 +48,16 @@ DecisionTreeClassifier_ml.fit(X_train, y_train)
 DecisionTreeClassifier_ml.score(X_test, y_test)
 clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
 
+
+## enregistrement de la normalisation
+# open the file in the write mode
+with open('model_DecisionTreeClassifier_ml.csv', 'w', encoding='UTF8') as f:
+    # create the csv writer
+    writer = csv.writer(f)
+    # write a row to the csv file
+    writer.writerow(DecisionTreeClassifier_ml['standardscaler'].scale_)
+    writer.writerow(DecisionTreeClassifier_ml['standardscaler'].mean_)
+
 ## génération du code cpp
 txt = ""
 txt += "#include <iostream>  \n"
@@ -57,6 +69,6 @@ txt += lecture_node(0)
 txt += "}"
 
 # écriture du code dans le fichier
-fichier = open("code.cpp", "a")
+fichier = open("src/code.cpp", "w")
 fichier.write(txt)
 fichier.close()
