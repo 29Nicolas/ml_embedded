@@ -1,5 +1,5 @@
 # ML_embedded
 
 ## Auteurs
- - Mirado RAJAOMAROSATA (le major)
+ - Mirado RAJAOMAROSATA
 - Nicolas DEFOUR
