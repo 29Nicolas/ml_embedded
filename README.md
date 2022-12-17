@@ -7,9 +7,9 @@
 ## Structure du git
 La branche main contient le code permettant l'entrainement et la prédiction. Le dossier entrainement contient les codes nécessaires à l'entrainement et le dossier predict ceux pour la prédiction sur la Rpi.
 
-La branche traitement_parallele_openMP contient une amélioration de l'extraction des descripteurs par du calcul parallèle (pas demandé dans le sujet du projet)
+La branche traitement_parallele_openMP contient une amélioration de l'extraction des descripteurs par du calcul parallèle (pas demandé dans le sujet du projet). Merge avec la branch main (fait)
 
-La branche plateforme_inference est la branche de prédicition qui tournera sur la RPi c'est-à-dire la lecture d'un seul fichier audio, l'extraction de ces descripteurs, la prédiction par le modèle.
+La branche plateforme_inference n'est plus utilisé et plus à jour. Suppression dans peu de temps
 
 ## Travail achevé
 - La lecture fonctionne pour les deux plateformes (entrainement, inférence).

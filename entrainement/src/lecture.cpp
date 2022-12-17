@@ -5,6 +5,10 @@
 #include "fft_utils.h"
 #include <complex>
 #include <filesystem>
+#include <dirent.h>
+#include <stdio.h>
+#include <omp.h>
+#include <vector>
 using namespace std;
 
 int read32Bits(ifstream &file_s){
@@ -108,6 +112,10 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 			}
 		}
 	}
+
+	#pragma critical
+	{
+		// cout << file_name << endl;
 	for(int k=0; k<N; k++)
 		file_o << mu[k] << ",";
 	
@@ -143,23 +151,68 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 		i++;
 		caractere = file_name[i];
 	}
+	file_o << endl;
+}
 
 	// cout << endl;
+}
+
+vector<string> extraction_nom_fichier(string path, int &nb_fichier){
+	nb_fichier = 0;
+    struct dirent *dir;
+    struct dirent *dire;
+    const char* chemin = path.c_str();
+    DIR *d = opendir(chemin); 
+    vector<string> nom_fichier;
+    if (d){
+        while ((dir = readdir(d)) != NULL){
+                string nom = dir->d_name;
+                if(nom[0] !='.'){
+                    nom = path + "/" + nom;
+                    const char *c = nom.c_str();
+                    DIR *e = opendir(c); 
+                    while ((dire = readdir(e)) != NULL){
+                        string nom_mus = dire->d_name;
+                        if(nom_mus[nom_mus.length()-3] =='.' and nom_mus[nom_mus.length()-2] == 'a' and nom_mus[nom_mus.length()-1] == 'u'){
+	                        nom_mus = nom + "/" + nom_mus;
+	                        nom_fichier.push_back(nom_mus);
+	                        nb_fichier++;
+                    	}
+                    }
+                    closedir(e);
+                }
+        }
+        closedir(d);
+    }
+    return nom_fichier;
 }
 
 int main(){
 	string file_path = "../../archive/genres/";
 
-	string file_o_name = "../model/descripteurs.csv";
+	string file_o_name = "../model/output.csv";
 	ofstream file_o;
 	file_o.open(file_o_name);
 
+	double start = omp_get_wtime();
+	
+    int nb_fichier = 0;
+	vector<string> nom_fichier = extraction_nom_fichier(file_path, nb_fichier);
 
-	for (const auto& dirEntry : std::filesystem::recursive_directory_iterator(file_path)){
-    	string name = dirEntry.path();
-    	if(name[name.length()-3] == '.' and name[name.length()-2] == 'a' and name[name.length()-1] == 'u'){
-    		extraction_descripteur(dirEntry.path(), file_o);
-    		file_o << endl;
-    	}
+	int count2 = 0;
+	#pragma omp parallel for
+	for (int i =0; i<nb_fichier; i++)
+	{
+        extraction_descripteur(nom_fichier[i], file_o);
+
+    //     #pragma omp critical
+    //     {
+    //     cout << "nommbre de thread " << omp_get_thread_num() << endl;
+    //     cout << count2 << endl;
+    //     count2++;
+    // } 
+
     }
+    double end = omp_get_wtime();
+    cout << "temps execution : " << end-start << endl;
 }
