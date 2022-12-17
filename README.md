@@ -22,6 +22,6 @@ La branche plateforme_inference est la branche de prédicition qui tournera sur 
 - prédicition par SVC
 
 ## setup
-cloner le repertoire et lancer le setup.sh
-pour relancer, lancer resetup.sh
-pour clean (supprimer dossier temporaire ou des fichiers générés), utiliser clear.sh
+ - cloner le repertoire et lancer le setup.sh 
+ - pour relancer, lancer resetup.sh
+ - pour clean (supprimer dossier temporaire ou des fichiers générés), utiliser clear.sh
