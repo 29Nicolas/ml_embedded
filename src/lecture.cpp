@@ -150,7 +150,7 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 int main(){
 	string file_path = "../archive/genres/";
 
-	string file_o_name = "../archive/output/output2.csv";
+	string file_o_name = "../archive/output/output3.csv";
 	ofstream file_o;
 	file_o.open(file_o_name);
 
