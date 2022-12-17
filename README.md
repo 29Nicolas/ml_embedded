@@ -16,10 +16,12 @@ La branche plateforme_inference n'est plus utilisé et plus à jour. Suppression
 - l'extraction des descripteurs fonctionne pour les deux plateformes
 - l'apprentissage du modèle en SVC et génére un fichier cvs pour enregistrer le modèle
 - l'apprentissage du modèle d'arbre de decision fonctionne et génére un code cpp de décision
+- normalisation après lecture pour arbre de décision
+- prediction par l'ia arbre de decision
 
 ## Travail en cours
-- normalisation après lecture pour arbre de décision
-- prédicition par SVC
+- vérifier le fonctionnement de arbre de decision et des prédictions faites (evaluation du modele pour vérifier si le code est ok)
+- prédiction par SVC
 
 ## setup
  - cloner le repertoire et lancer le setup.sh 

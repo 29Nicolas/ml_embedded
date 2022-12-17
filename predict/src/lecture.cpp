@@ -1,11 +1,9 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include "constants.h"
 #include "fft_utils.h"
 #include <complex>
-#include <filesystem>
-// #include "code.h"
+
 using namespace std;
 
 int read32Bits(ifstream &file_s){
@@ -109,6 +107,31 @@ void extraction_descripteur(string file_name, double mu[], double sigma[]){
 	}
 }
 
+
+void lecture_modelDecisionTree(string file_name, double means[], double scales[]){
+	ifstream f(file_name);
+	if(f.is_open()){
+		char virgule;
+		for(int i = 0; i<(2*N)-1; i++){
+			f >> scales[i];
+			f >> virgule;
+		}
+		f >> scales[2*N-1];
+		
+		for(int i=0; i<2*N-1; i++){
+			f >> means[i]; 
+			f >> virgule;
+		}
+		f >> means[2*N-1];
+	}
+}
+
+// int main(){
+// 	string path = "../model/model_DecisionTreeClassifier_ml.csv";
+// 	double mu[2*N];
+// 	double sigma[2*N];
+// 	lecture_modelDecisionTree(path, mu, sigma);
+// }
 // int main(){
 // 	string file_path = "../archive/genres/blues/blues.00000.au";
 
