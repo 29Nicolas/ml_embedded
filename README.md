@@ -5,7 +5,7 @@
 - Nicolas DEFOUR
 
 ## Structure du git
-La branche main contient le code permettant l'entrainement c'est-à-dire l'extraction des descripteurs en générant un fichier csv pour pouvoir entrainer l'IA en cpp. Puis en python, l'apprentissage du modèle de l'IA, la génération du code pour l'arbre de Decision ou la création d'un fichier csv contenant le modèle entrainé. 
+La branche main contient le code permettant l'entrainement et la prédiction. Le dossier entrainement contient les codes nécessaires à l'entrainement et le dossier predict ceux pour la prédiction sur la Rpi.
 
 La branche traitement_parallele_openMP contient une amélioration de l'extraction des descripteurs par du calcul parallèle (pas demandé dans le sujet du projet)
 
@@ -20,3 +20,8 @@ La branche plateforme_inference est la branche de prédicition qui tournera sur 
 ## Travail en cours
 - normalisation après lecture pour arbre de décision
 - prédicition par SVC
+
+## setup
+cloner le repertoire et lancer le setup.sh
+pour relancer, lancer resetup.sh
+pour clean (supprimer dossier temporaire ou des fichiers générés), utiliser clear.sh

@@ -148,9 +148,9 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 }
 
 int main(){
-	string file_path = "../archive/genres/";
+	string file_path = "../../archive/genres/";
 
-	string file_o_name = "../archive/output/output.csv";
+	string file_o_name = "../model/descripteurs.csv";
 	ofstream file_o;
 	file_o.open(file_o_name);
 
