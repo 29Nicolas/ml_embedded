@@ -5,4 +5,9 @@ cd ../scripts;
 python3 DecisionTree.py;
 python3 SVM.py;
 cd ..;
-cp -r model/ ../predict/
+cp model/*.csv ../predict/model/;
+cp model/*.cpp ../predict/src;
+cp model/*.h ../predict/src;
+cd ../predict/build;
+make;
+./main;
