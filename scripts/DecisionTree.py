@@ -14,11 +14,16 @@ from sklearn.tree import DecisionTreeClassifier
 
 def lecture_node(i):
     if(clf.tree_.children_left[i] == clf.tree_.children_right[i]):
-        return "{return " + unique_label[np.argmax(clf.tree_.value[i])] + ";}"
+        return "{ cout << '" + unique_label[np.argmax(clf.tree_.value[i])] + "' << endl; return '" + unique_label[np.argmax(clf.tree_.value[i])] + "';}"
     else:
         txt_1 = lecture_node(clf.tree_.children_left[i])
         txt_2 = lecture_node(clf.tree_.children_right[i])
-        Text_1 = "if(X[" + str(clf.tree_.feature[i]) +"] <= " + str(clf.tree_.threshold[i]) + "){" + txt_1 + "}"
+        if(clf.tree_.feature[i] <512):
+            feature = "mu["+str(clf.tree_.feature[i]) + "]"
+        else:
+            feature = "sigma[" + str(clf.tree_.feature[i]-512) + "]"
+        print(feature)
+        Text_1 = "if("+ feature + " <= " + str(clf.tree_.threshold[i]) + "){" + txt_1 + "}"
         Text_2 = "else{" + txt_2 + "}"
         return Text_1 + Text_2
 
@@ -70,6 +75,9 @@ for i in range(n_nodes):
 
 txt = lecture_node(2)
 print(txt)
+
+print(np.max(feature))
+# si feature < 512 alors recherche mu[i] sinon dans sigma[i-512]
 
 # from sklearn.tree import _tree
 
