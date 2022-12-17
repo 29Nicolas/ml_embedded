@@ -14,7 +14,7 @@ def lecture_node(i):
     '''
     if(clf.tree_.children_left[i] == clf.tree_.children_right[i]):
         # condition d'arret : le node est une feuille de l'arbre
-        return "cout << '" + unique_label[np.argmax(clf.tree_.value[i])] + "' << endl; return '" + unique_label[np.argmax(clf.tree_.value[i])] + "';"
+        return "cout << \"" + unique_label[np.argmax(clf.tree_.value[i])] + "\" << endl; return " + str(np.argmax(clf.tree_.value[i])) + ";"
     else:
         # sinon on traite les enfants
         txt_1 = lecture_node(clf.tree_.children_left[i])
@@ -46,8 +46,13 @@ DecisionTreeClassifier_ml.fit(X_train, y_train)
 DecisionTreeClassifier_ml.score(X_test, y_test)
 clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
 
-# génération du code cpp
-txt = "string decision_tree(double mu[], double sigma[]){"
+## génération du code cpp
+txt = ""
+txt += "#include <iostream>  \n"
+txt += "#include \"code.h\" \n"
+txt += "using namespace std; \n \n"
+# fonction de decision arbre
+txt += "int decision_tree(double mu[], double sigma[]){ \n"
 txt += lecture_node(0)
 txt += "}"
 
