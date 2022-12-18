@@ -11,7 +11,7 @@ from sklearn.svm import LinearSVC
 from sklearn.tree import DecisionTreeClassifier
 
 
-with open('../../archive/output/output3.csv', newline='') as csvfile:
+with open('../model/output.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
 data = np.array(data)
 

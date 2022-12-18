@@ -31,7 +31,7 @@ def lecture_node(i):
 ## lecture du fichier contenant les descripteurs
 
 # extraction des informations du csv
-with open('../../archive/output/output3.csv', newline='') as csvfile:
+with open('../model/output.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
 data = np.array(data)
 
