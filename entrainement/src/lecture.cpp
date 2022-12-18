@@ -7,7 +7,7 @@
 #include <filesystem>
 #include <dirent.h>
 #include <stdio.h>
-#include <omp.h>
+// #include <omp.h>
 #include <vector>
 using namespace std;
 
@@ -113,8 +113,8 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 		}
 	}
 
-	#pragma critical
-	{
+	// #pragma critical
+	// {
 		// cout << file_name << endl;
 	for(int k=0; k<N; k++)
 		file_o << mu[k] << ",";
@@ -122,8 +122,8 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 	for(int k=0; k<N; k++)
 		file_o << sigma[k] << ",";
 
-	char caractere = file_name[18];
-	int i = 18;
+	char caractere = file_name[22];
+	int i = 22;
 	while(caractere != '/'){
 		file_o << caractere;
 		// cout << caractere;
@@ -152,7 +152,7 @@ void extraction_descripteur(string file_name, ofstream &file_o){
 		caractere = file_name[i];
 	}
 	file_o << endl;
-}
+// }
 
 	// cout << endl;
 }
@@ -194,13 +194,13 @@ int main(){
 	ofstream file_o;
 	file_o.open(file_o_name);
 
-	double start = omp_get_wtime();
+	// double start = omp_get_wtime();
 	
     int nb_fichier = 0;
 	vector<string> nom_fichier = extraction_nom_fichier(file_path, nb_fichier);
 
 	int count2 = 0;
-	#pragma omp parallel for
+	// #pragma omp parallel for
 	for (int i =0; i<nb_fichier; i++)
 	{
         extraction_descripteur(nom_fichier[i], file_o);
@@ -213,6 +213,6 @@ int main(){
     // } 
 
     }
-    double end = omp_get_wtime();
-    cout << "temps execution : " << end-start << endl;
+    // double end = omp_get_wtime();
+    // cout << "temps execution : " << end-start << endl;
 }
