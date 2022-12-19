@@ -108,8 +108,7 @@ void extraction_descripteur(string file_name, double mu[], double sigma[]){
 	}
 }
 
-void lecture_modelDecisionTree(string file_name, double means[], double scales[]){
-	ifstream f(file_name);
+void lectureModelNormalisation(ifstream &f, double means[], double scales[]){
 	if(f.is_open()){
 		char virgule;
 		for(int i = 0; i<(2*N)-1; i++){
@@ -133,15 +132,13 @@ void normalisation(double mu[], double sigma[], double means[], double scales[])
     }
 }
 
-void traitementDecisionTree(string file_path){
+void traitementDecisionTree(string file_path, double mu[], double sigma[]){
 	// cout << argv[i] << endl;
 	string path_model = "../model/model_DecisionTreeClassifier_ml.csv";
-	double mu[N];
-	double sigma[N];
 	double means[2*N]; 
 	double scales[2*N];
-	extraction_descripteur(file_path, mu, sigma);
-	lecture_modelDecisionTree(path_model, means, scales);
+	ifstream f(path_model);
+	lectureModelNormalisation(f, means, scales);
 
 	normalisation(mu, sigma, means, scales);
 
@@ -149,7 +146,16 @@ void traitementDecisionTree(string file_path){
 	cout << a << endl;
 }
 
-void traitementSvc(string file_path){
+void traitementSvc(string file_path, double mu[], double sigma[]){
+	string path_model = "../model/model_svm.csv";
+	double means[2*N]; 
+	double scales[2*N];
+	ifstream f(path_model);
+	lectureModelNormalisation(f, means, scales);
+	normalisation(mu, sigma, means, scales);
+	
+	
+
 	cout << "traitement svc" << endl;
 }
 
@@ -182,12 +188,16 @@ int main(int argc, char** argv){
 		cout << "choisir le model d'IA à utiliser" << endl;
 	}
 	else{
+		double mu[N];
+		double sigma[N];
+		extraction_descripteur(file_path, mu, sigma);
+
 		for (int i = 2; i < argc; ++i){
 			if(*argv[i] == *model[0]){
-				traitementDecisionTree(file_path);
+				traitementDecisionTree(file_path, mu, sigma);
 			}
 			else if(*argv[i] == *model[1]){
-				traitementSvc(file_path);
+				traitementSvc(file_path, mu, sigma);
 			}
 		}
 		return 0;
