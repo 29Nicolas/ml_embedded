@@ -133,20 +133,63 @@ void normalisation(double mu[], double sigma[], double means[], double scales[])
     }
 }
 
-int main(){
-    string model = "../model/model_DecisionTreeClassifier_ml.csv";
-	string file_path = "../archive/genres/blues/blues.00000.au";
-
+void traitementDecisionTree(string file_path){
+	// cout << argv[i] << endl;
+	string path_model = "../model/model_DecisionTreeClassifier_ml.csv";
 	double mu[N];
 	double sigma[N];
-    double means[2*N]; 
-    double scales[2*N];
+	double means[2*N]; 
+	double scales[2*N];
 	extraction_descripteur(file_path, mu, sigma);
-    lecture_modelDecisionTree(model, means, scales);
+	lecture_modelDecisionTree(path_model, means, scales);
 
-    normalisation(mu, sigma, means, scales);
+	normalisation(mu, sigma, means, scales);
 
 	int a = decision_tree(mu, sigma);
-    cout << a << endl;
-	
+	cout << a << endl;
+}
+
+void traitementSvc(string file_path){
+	cout << "traitement svc" << endl;
+}
+
+int main(int argc, char** argv){
+
+	string file_path = "../archive/genres/";
+
+	if(argc == 1){
+		cout << "choisir la musique a traité" << endl;
+		return 0;
+	}
+
+	string mus = argv[1];
+	int i = 0;
+	char caract = mus[i];
+	while(caract != '.'){
+		i++;
+		file_path += caract;
+		caract = mus[i];
+	}
+	file_path = file_path + '/' + argv[1];
+	// cout << file_path << endl;
+
+	vector<char*> model;
+	int nb_model = 2;
+	model.push_back("decisionTree");
+	model.push_back("svc");
+
+	if(argc == 2){
+		cout << "choisir le model d'IA à utiliser" << endl;
+	}
+	else{
+		for (int i = 2; i < argc; ++i){
+			if(*argv[i] == *model[0]){
+				traitementDecisionTree(file_path);
+			}
+			else if(*argv[i] == *model[1]){
+				traitementSvc(file_path);
+			}
+		}
+		return 0;
+	}	
 }
