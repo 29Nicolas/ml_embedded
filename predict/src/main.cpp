@@ -106,6 +106,8 @@ void extraction_descripteur(string file_name, double mu[], double sigma[]){
 			}
 		}
 	}
+	for(int i=0; i<512; i++)
+			cout << mu[i] << endl;
 }
 
 void lectureModelNormalisation(ifstream &f, double means[], double scales[]){
@@ -146,6 +148,37 @@ void traitementDecisionTree(string file_path, double mu[], double sigma[]){
 	cout << a << endl;
 }
 
+void produitMatriciel(double A[][1024], double B[], double C[]){
+	double c; 
+	for(int i=0; i<10; i++){
+		c = 0;
+		for(int k=0; k<1024; k++){
+			c += A[i][k] * B[k];
+		}
+		C[i] = c;
+	}
+}
+
+void transformationMatriceB(double B[], double mu[], double sigma[]){
+	for(int j=0; j<512; j++){
+		B[j] = mu[j];
+		B[j+N] = sigma[j];
+	}
+}
+
+void lectureMatriceSvc(ifstream &f, double A[][1024]){
+	if(f.is_open()){
+		char virgule;
+		for(int j=0; j<10; j++){
+			for(int k=0; k<1023; k++){
+				f >> A[j][k];
+				f >> virgule;
+			}
+			f >> A[j][1024];
+		}
+	}
+}
+
 void traitementSvc(string file_path, double mu[], double sigma[]){
 	string path_model = "../model/model_svm.csv";
 	double means[2*N]; 
@@ -153,6 +186,17 @@ void traitementSvc(string file_path, double mu[], double sigma[]){
 	ifstream f(path_model);
 	lectureModelNormalisation(f, means, scales);
 	normalisation(mu, sigma, means, scales);
+	double B[1024];
+	transformationMatriceB(B, mu, sigma);
+	double A[10][1024];
+	lectureMatriceSvc(f, A);
+	
+	double C[10];
+	produitMatriciel(A, B, C);
+
+	for(int j = 0; j< 10; j++){
+		cout << C[j] << endl;
+	}
 	
 	
 
@@ -198,6 +242,17 @@ int main(int argc, char** argv){
 			}
 			else if(*argv[i] == *model[1]){
 				traitementSvc(file_path, mu, sigma);
+			}
+			else{
+				ofstream f1("descripteur.csv");
+				for(int i=0; i<512; i++){
+					f1 << mu[i]; 
+					f1 << ",";
+				}
+				for(int i=0; i<512; i++){
+					f1 << sigma[i]; 
+					f1 << ",";
+				}
 			}
 		}
 		return 0;
