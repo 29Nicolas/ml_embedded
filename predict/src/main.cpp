@@ -128,7 +128,7 @@ void lectureModelNormalisation(ifstream &f, double means[], double scales[]){
 void normalisation(double mu[], double sigma[], double means[], double scales[]){
     for(int i = 0; i<N; i++){
         mu[i] = (mu[i]-means[i])/scales[i];
-        sigma[i+2*N] = (sigma[i+2*N]-means[i+2*N])/scales[i+2*N];
+        sigma[i] = (sigma[i]-means[i+2*N])/scales[i+2*N];
     }
 }
 
@@ -140,7 +140,6 @@ void traitementDecisionTree(string file_path, double mu[], double sigma[]){
 	lectureModelNormalisation(f, means, scales);
 
 	normalisation(mu, sigma, means, scales);
-
 	int a = decision_tree(mu, sigma);
 }
 
@@ -230,7 +229,6 @@ int main(int argc, char** argv){
 		double mu[N];
 		double sigma[N];
 		extraction_descripteur(file_path, mu, sigma);
-
 		for (int i = 2; i < argc; ++i){
 			if(*argv[i] == *model[0]){
 				traitementDecisionTree(file_path, mu, sigma);
