@@ -106,8 +106,6 @@ void extraction_descripteur(string file_name, double mu[], double sigma[]){
 			}
 		}
 	}
-	for(int i=0; i<512; i++)
-			cout << mu[i] << endl;
 }
 
 void lectureModelNormalisation(ifstream &f, double means[], double scales[]){
@@ -135,7 +133,6 @@ void normalisation(double mu[], double sigma[], double means[], double scales[])
 }
 
 void traitementDecisionTree(string file_path, double mu[], double sigma[]){
-	// cout << argv[i] << endl;
 	string path_model = "../model/model_DecisionTreeClassifier_ml.csv";
 	double means[2*N]; 
 	double scales[2*N];
@@ -145,7 +142,6 @@ void traitementDecisionTree(string file_path, double mu[], double sigma[]){
 	normalisation(mu, sigma, means, scales);
 
 	int a = decision_tree(mu, sigma);
-	cout << a << endl;
 }
 
 void produitMatriciel(double A[][1024], double B[], double C[]){
@@ -205,7 +201,7 @@ void traitementSvc(string file_path, double mu[], double sigma[]){
 
 int main(int argc, char** argv){
 
-	string file_path = "../archive/genres/";
+	string file_path = "../../archive/genres/";
 
 	if(argc == 1){
 		cout << "choisir la musique a traité" << endl;
@@ -220,8 +216,7 @@ int main(int argc, char** argv){
 		file_path += caract;
 		caract = mus[i];
 	}
-	file_path = file_path + '/' + argv[1];
-	// cout << file_path << endl;
+	file_path = file_path + '/' + argv[1] + ".au";
 
 	vector<char*> model;
 	int nb_model = 2;
@@ -244,15 +239,16 @@ int main(int argc, char** argv){
 				traitementSvc(file_path, mu, sigma);
 			}
 			else{
-				ofstream f1("descripteur.csv");
+				ofstream f1("../script/descripteur.csv");
 				for(int i=0; i<512; i++){
 					f1 << mu[i]; 
 					f1 << ",";
 				}
-				for(int i=0; i<512; i++){
+				for(int i=0; i<511; i++){
 					f1 << sigma[i]; 
 					f1 << ",";
 				}
+				f1 << sigma[511]; 
 			}
 		}
 		return 0;
