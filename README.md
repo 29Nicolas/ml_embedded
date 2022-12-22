@@ -22,3 +22,4 @@ La branche main contient le code permettant l'entrainement et la prédiction. Le
 ## setup
  - cloner le repertoire et lancer le setup.sh (entrainement + prediction donc assez long)
  - pour clean (supprimer dossier temporaire ou des fichiers générés), utiliser clear.sh
+ - pour prédire à partir de l'IA précédemment entrainé, utiliser predict.sh --> ce script compile l'algo de prédiction. Il suffit après de ce dépacer dans le dossier XXX/predict/build pour exécuter prediction_genre_musical en lui donnant en argument le nom de la musique (sans l'extension car uniquement les '.au' sont adapter pour le programme) puis en argument le nom des méthodes souhaitées (decisionTree ou/et svc)
