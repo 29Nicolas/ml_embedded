@@ -237,6 +237,10 @@ void traitementSvc(string file_path, double mu[], double sigma[]){
 	cout << label[index_max] << endl;
 }
 
+void traitementRandomForest(string file_path, double mu[], double sigma[]){
+
+}
+
 int main(int argc, char** argv){
 
 	string file_path = "../../archive/genres/";
@@ -260,6 +264,7 @@ int main(int argc, char** argv){
 	int nb_model = 2;
 	model.push_back("decisionTree");
 	model.push_back("svc");
+	model.push_back("randomForest");
 
 	if(argc == 2){
 		cout << "choisir le model d'IA à utiliser" << endl;
@@ -274,6 +279,9 @@ int main(int argc, char** argv){
 			}
 			else if(*argv[i] == *model[1]){
 				traitementSvc(file_path, mu, sigma);
+			}
+			else if(*argv[i] == *model[2]){
+				traitementRandomForest(file_path, mu, sigma);
 			}
 			else{
 				ofstream f1("../script/descripteur.csv");
