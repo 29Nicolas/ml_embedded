@@ -1,6 +1,6 @@
 mkdir entrainement/build;
-mkdir entrainement/model;
-mkdir predict/model;
+# mkdir entrainement/model;
+# mkdir predict/model;
 mkdir predict/build;
 cd entrainement/build;
 cmake ..;

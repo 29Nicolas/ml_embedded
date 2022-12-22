@@ -38,9 +38,12 @@ int readSample(ifstream &file_s){
 }
 
 void extraction_descripteur(string file_name, double mu[], double sigma[]){
-
 	ifstream file_s;
 	file_s.open(file_name);
+	if(!file_s.is_open()){
+		cout << "Erreur: fichier non trouvé" << endl;
+		return;
+	}
 
 	int p = file_s.tellg();
 	int nb_magique = read32Bits(file_s);
@@ -128,7 +131,7 @@ void lectureModelNormalisation(ifstream &f, double means[], double scales[]){
 void normalisation(double mu[], double sigma[], double means[], double scales[]){
     for(int i = 0; i<N; i++){
         mu[i] = (mu[i]-means[i])/scales[i];
-        sigma[i] = (sigma[i]-means[i+2*N])/scales[i+2*N];
+        sigma[i] = (sigma[i]-means[i+N])/scales[i+N];
     }
 }
 
@@ -149,6 +152,8 @@ void produitMatriciel(double A[][1024], double B[], double C[]){
 		c = 0;
 		for(int k=0; k<1024; k++){
 			c += A[i][k] * B[k];
+			// if(i==1)
+			// 	cout << c << " " << A[i][k] << " " << B[k] << endl;
 		}
 		C[i] = c;
 	}
@@ -169,7 +174,7 @@ void lectureMatriceSvc(ifstream &f, double A[][1024]){
 				f >> A[j][k];
 				f >> virgule;
 			}
-			f >> A[j][1024];
+			f >> A[j][1023];
 		}
 	}
 }
@@ -192,10 +197,6 @@ void traitementSvc(string file_path, double mu[], double sigma[]){
 	for(int j = 0; j< 10; j++){
 		cout << C[j] << endl;
 	}
-	
-	
-
-	cout << "traitement svc" << endl;
 }
 
 int main(int argc, char** argv){

@@ -27,9 +27,11 @@ with open('descripteur.csv', newline='') as csvfile:
     x = list(csv.reader(csvfile))
 
 a = np.zeros((1024, 1))
-a = (a-means)/scales
-for i in range(1024):
-    a[i] = float(x[0][i])
-c = np.dot(data, a).T+ iter;
+for i in range(len(x[0])):
+    a[i, 0] = x[0][i]
+a = (a-means)/(scales)
+
+c = np.dot(data, a).T + iter;
+# print(c.shape)
 print((c))
-print(np.max(c))
+print(np.argmax(c))
