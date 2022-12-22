@@ -190,7 +190,7 @@ vector<string> extraction_nom_fichier(string path, int &nb_fichier){
 int main(){
 	string file_path = "../../archive/genres/";
 
-	string file_o_name = "../model/output.csv";
+	string file_o_name = "../../predict/model/output.csv";
 	ofstream file_o;
 	file_o.open(file_o_name);
 

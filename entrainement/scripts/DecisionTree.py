@@ -31,7 +31,7 @@ def lecture_node(i):
 ## lecture du fichier contenant les descripteurs
 
 # extraction des informations du csv
-with open('../model/output.csv', newline='') as csvfile:
+with open('../../predict/model/output.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
 data = np.array(data)
 
@@ -51,7 +51,7 @@ clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
 
 ## enregistrement de la normalisation
 # open the file in the write mode
-with open('../model/model_DecisionTreeClassifier_ml.csv', 'w', encoding='UTF8') as f:
+with open('../../predict/model/model_DecisionTreeClassifier_ml.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
     # write a row to the csv file
@@ -69,12 +69,12 @@ txt += lecture_node(0)
 txt += "}"
 
 # écriture du code dans le fichier
-fichier = open("../model/code.cpp", "w")
+fichier = open("../../predict/src/code.cpp", "w")
 fichier.write(txt)
 fichier.close()
 
 ## ecriture du h
 txt = "#ifndef CODE__H \n#define CODE__H \nint decision_tree(double mu[], double sigma[]);\n#endif"
-fichier = open("../model/code.h", "w")
+fichier = open("../../predict/src/code.h", "w")
 fichier.write(txt)
 fichier.close()

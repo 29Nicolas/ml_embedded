@@ -1,5 +1,4 @@
 mkdir entrainement/build;
-mkdir entrainement/model;
 mkdir predict/model;
 mkdir predict/build;
 cd entrainement/build;
@@ -16,4 +15,4 @@ cp model/*.h ../predict/src;
 cd ../predict/build;
 cmake ..;
 make;
-./main;
+cp prediction_genre_musical ../..;
