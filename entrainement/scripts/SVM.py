@@ -37,3 +37,4 @@ with open('../model/model_svm.csv', 'w', encoding='UTF8') as f:
     for i in range(10):
       writer.writerow(svm['linearsvc'].coef_[i,:])
     writer.writerow(svm['linearsvc'].intercept_)
+    writer.writerow(svm['linearsvc'].classes_)

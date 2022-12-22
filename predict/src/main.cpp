@@ -4,6 +4,7 @@
 #include "fft_utils.h"
 #include <complex>
 #include "code.h"
+#include <map>
 
 using namespace std;
 
@@ -146,7 +147,7 @@ void traitementDecisionTree(string file_path, double mu[], double sigma[]){
 	int a = decision_tree(mu, sigma);
 }
 
-void produitMatriciel(double A[][1024], double B[], double C[]){
+void produitMatricielSoustraction(double A[][1024], double B[], double D[], double resultat[]){
 	double c; 
 	for(int i=0; i<10; i++){
 		c = 0;
@@ -155,7 +156,7 @@ void produitMatriciel(double A[][1024], double B[], double C[]){
 			// if(i==1)
 			// 	cout << c << " " << A[i][k] << " " << B[k] << endl;
 		}
-		C[i] = c;
+		resultat[i] = c - D[i];
 	}
 }
 
@@ -166,7 +167,7 @@ void transformationMatriceB(double B[], double mu[], double sigma[]){
 	}
 }
 
-void lectureMatriceSvc(ifstream &f, double A[][1024]){
+void lectureMatriceSvc(ifstream &f, double A[][1024], double intercept[]){
 	if(f.is_open()){
 		char virgule;
 		for(int j=0; j<10; j++){
@@ -175,6 +176,33 @@ void lectureMatriceSvc(ifstream &f, double A[][1024]){
 				f >> virgule;
 			}
 			f >> A[j][1023];
+		}
+		for(int j=0;j<9; j++){
+			f >> intercept[j];
+			f >> virgule;
+		}
+		f >> intercept[9];
+	}
+}
+
+void lectureLabel(ifstream &f, map<int, string> &label){
+	if(f.is_open()){
+		string str;
+		getline(f, str);
+		getline(f, str);
+		// cout << str << endl;
+		int j=0;
+		string A = ""; 
+		for(int i=0; i<str.size(); i++){
+			if(str[i]!=','){
+				A = A+str[i];
+			}
+			else{
+				label[j] = A;
+				j++;
+				A = "";
+			}
+			label[j] = A;
 		}
 	}
 }
@@ -186,17 +214,27 @@ void traitementSvc(string file_path, double mu[], double sigma[]){
 	ifstream f(path_model);
 	lectureModelNormalisation(f, means, scales);
 	normalisation(mu, sigma, means, scales);
-	double B[1024];
-	transformationMatriceB(B, mu, sigma);
-	double A[10][1024];
-	lectureMatriceSvc(f, A);
-	
-	double C[10];
-	produitMatriciel(A, B, C);
+	double descripteur[1024];
+	transformationMatriceB(descripteur, mu, sigma);
+	double coef[10][1024];
+	double intercept[10];
+	lectureMatriceSvc(f, coef, intercept);
 
+	map<int, string> label;
+	lectureLabel(f, label);
+
+	double resultat[10];
+	produitMatricielSoustraction(coef, descripteur, intercept, resultat);
+
+	double max_resultat = resultat[0];
+	int index_max = 0;
 	for(int j = 0; j< 10; j++){
-		cout << C[j] << endl;
+		if(max_resultat < resultat[j]){
+			max_resultat = resultat[j];
+			index_max = j;
+		}
 	}
+	cout << label[index_max] << endl;
 }
 
 int main(int argc, char** argv){
