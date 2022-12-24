@@ -100,5 +100,6 @@ int decision_tree_96(double mu[], double sigma[]);
 int decision_tree_97(double mu[], double sigma[]);
 int decision_tree_98(double mu[], double sigma[]);
 int decision_tree_99(double mu[], double sigma[]);
+int maxTableau(double tableau[10]);
 int randomForest(double mu[], double sigma[]);
 #endif

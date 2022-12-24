@@ -13,7 +13,8 @@ def lecture_node(i):
     '''
     if(clf.tree_.children_left[i] == clf.tree_.children_right[i]):
         # condition d'arret : le node est une feuille de l'arbre
-        return "cout << \"" + unique_label[np.argmax(clf.tree_.value[i])] + "\" << endl; return " + str(np.argmax(clf.tree_.value[i])) + ";"
+        # "cout << \"" + unique_label[np.argmax(clf.tree_.value[i])] + "\" << endl;
+        return "return " + str(np.argmax(clf.tree_.value[i])) + ";"
     else:
         # sinon on traite les enfants
         txt_1 = lecture_node(clf.tree_.children_left[i])
@@ -45,7 +46,7 @@ X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names,
 RandomForest_ml = make_pipeline(preprocessing.StandardScaler(), RandomForestClassifier(n_estimators=100))
 RandomForest_ml.fit(X_train, y_train)
 RandomForest_ml.score(X_test, y_test)
-print(len(RandomForest_ml['randomforestclassifier'].estimators_))
+# print(len(RandomForest_ml['randomforestclassifier'].estimators_))
 nb_arbre = 100
 
 
@@ -88,9 +89,10 @@ txt += "int randomForest(double mu[], double sigma[]){\n"
 txt += "double genres[10] = {0};\n"
 for i in range(nb_arbre):
     txt += "genres[decision_tree_" + str(i) + "(mu, sigma)]++;\n";
-txt += "}\n"
 
-txt += ""
+txt += "int indexMaxGenres = maxTableau(genres);\n"
+txt += "return indexMaxGenres;\n"
+txt += "}"
 
 # écriture du code dans le fichier
 fichier = open("../../predict/src/codeRandomForest.cpp", "w")
