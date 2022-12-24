@@ -1,14 +1,9 @@
 import csv
 import numpy as np
 from sklearn import preprocessing
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.linear_model import LogisticRegression
-from sklearn.neural_network import MLPClassifier
-from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import LinearSVC
-from sklearn.tree import DecisionTreeClassifier
 
 
 with open('../../predict/model/output.csv', newline='') as csvfile:
