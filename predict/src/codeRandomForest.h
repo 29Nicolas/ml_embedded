@@ -1,5 +1,5 @@
-#ifndef CODERANDOMFOREST__H 
-#define CODERANDOMFOREST__H 
+#ifndef CODE__H 
+#define CODE__H 
 int decision_tree_0(double mu[], double sigma[]);
 int decision_tree_1(double mu[], double sigma[]);
 int decision_tree_2(double mu[], double sigma[]);

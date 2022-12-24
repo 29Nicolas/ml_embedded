@@ -14,12 +14,12 @@ label_names = data[:,1024]
 feature_values = data[:, :1024]
 
 # split données
-X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
+# X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
 
 # SVM
 svm = make_pipeline(preprocessing.StandardScaler(), LinearSVC())
-svm.fit(X_train, y_train)
-svm.score(X_test, y_test)
+svm.fit(feature_values, label_names)
+# svm.score(X_test, y_test)
 
 # open the file in the write mode
 with open('../../predict/model/model_svm.csv', 'w', encoding='UTF8') as f:
