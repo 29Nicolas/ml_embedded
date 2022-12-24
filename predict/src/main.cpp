@@ -4,6 +4,7 @@
 #include "fft_utils.h"
 #include <complex>
 #include "codeDecisionTree.h"
+#include "codeRandomForest.h"
 #include <map>
 
 using namespace std;
@@ -238,7 +239,15 @@ void traitementSvc(string file_path, double mu[], double sigma[]){
 }
 
 void traitementRandomForest(string file_path, double mu[], double sigma[]){
+	// cout << "random Forest" << endl;
+	string path_model = "../model/modelRandomForest.csv";
+	double means[2*N]; 
+	double scales[2*N];
+	ifstream f(path_model);
+	lectureModelNormalisation(f, means, scales);
 
+	normalisation(mu, sigma, means, scales);
+	int a = randomForest(mu, sigma);
 }
 
 int main(int argc, char** argv){

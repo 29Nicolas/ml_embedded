@@ -52,7 +52,7 @@ nb_arbre = 100
 
 ## enregistrement de la normalisation
 # open the file in the write mode
-with open('../../predict/model/codeRandomForest.csv', 'w', encoding='UTF8') as f:
+with open('../../predict/model/modelRandomForest.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
     # write a row to the csv file
