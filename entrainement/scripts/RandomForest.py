@@ -3,8 +3,7 @@ import numpy as np
 from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
-from sklearn.tree import DecisionTreeClassifier
-
+from sklearn.ensemble import RandomForestClassifier
 
 def lecture_node(i):
     '''
@@ -29,7 +28,6 @@ def lecture_node(i):
 
 
 ## lecture du fichier contenant les descripteurs
-
 # extraction des informations du csv
 with open('../../predict/model/output.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
@@ -42,39 +40,70 @@ feature_values = data[:, :1024]
 # split données
 X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
 
-# Decision Tree Classifier: entrainement de l'IA
-DecisionTreeClassifier_ml = make_pipeline(preprocessing.StandardScaler(), DecisionTreeClassifier())
-DecisionTreeClassifier_ml.fit(X_train, y_train)
-DecisionTreeClassifier_ml.score(X_test, y_test)
-clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
+
+# Random Forest
+RandomForest_ml = make_pipeline(preprocessing.StandardScaler(), RandomForestClassifier(n_estimators=100))
+RandomForest_ml.fit(X_train, y_train)
+RandomForest_ml.score(X_test, y_test)
+print(len(RandomForest_ml['randomforestclassifier'].estimators_))
+nb_arbre = 100
 
 
 ## enregistrement de la normalisation
 # open the file in the write mode
-with open('../../predict/model/model_DecisionTreeClassifier_ml.csv', 'w', encoding='UTF8') as f:
+with open('../../predict/model/codeRandomForest.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
     # write a row to the csv file
-    writer.writerow(DecisionTreeClassifier_ml['standardscaler'].scale_)
-    writer.writerow(DecisionTreeClassifier_ml['standardscaler'].mean_)
+    writer.writerow(RandomForest_ml['standardscaler'].scale_)
+    writer.writerow(RandomForest_ml['standardscaler'].mean_)
 
 ## génération du code cpp
 txt = ""
 txt += "#include <iostream>  \n"
-txt += "#include \"codeDecisionTree.h\" \n"
+txt += "#include \"codeRandomForest.h\" \n"
 txt += "using namespace std; \n \n"
-# fonction de decision arbre
-txt += "int decision_tree(double mu[], double sigma[]){ \n"
-txt += lecture_node(0)
-txt += "}"
+
+##fonction de decision arbre
+for i in range(nb_arbre):
+    txt += "int decision_tree_" + str(i) + "(double mu[], double sigma[]){\n"
+    clf = RandomForest_ml['randomforestclassifier'].estimators_[i]
+    txt += lecture_node(0)
+    txt += "}\n"
+txt += "\n"
+
+##Fonction max
+txt += "int maxTableau(double tableau[10]){\n"
+txt += "double max = tableau[0];\n"
+txt += "int index_max = 0;\n"
+txt += "for(int i=0;i<10;i++){"
+txt += "if(max<tableau[i]){"
+txt += "index_max = i;"
+txt +="max = tableau[i];"
+txt += "}}return index_max;}\n"
+txt +="\n"
+
+##Fonction Forest
+txt += "int randomForest(double mu[], double sigma[]){\n"
+txt += "double genres[10] = {0};\n"
+for i in range(nb_arbre):
+    txt += "genres[decision_tree_" + str(i) + "(mu, sigma)]++;\n";
+txt += "}\n"
+
+txt += ""
 
 # écriture du code dans le fichier
-fichier = open("../../predict/src/codeDecisionTree.cpp", "w")
+fichier = open("../../predict/src/codeRandomForest.cpp", "w")
 fichier.write(txt)
 fichier.close()
 
 ## ecriture du h
-txt = "#ifndef CODE__H \n#define CODE__H \nint decision_tree(double mu[], double sigma[]);\n#endif"
-fichier = open("../../predict/src/codeDecisionTree.h", "w")
+txt = "#ifndef CODE__H \n#define CODE__H \n"
+for i in range(nb_arbre):
+    txt += "int decision_tree_" + str(i) + "(double mu[], double sigma[]);\n"
+txt += "int maxTableau(double tableau[10]);\n"
+txt += "int randomForest(double mu[], double sigma[]);\n"
+txt += "#endif"
+fichier = open("../../predict/src/codeRandomForest.h", "w")
 fichier.write(txt)
 fichier.close()
