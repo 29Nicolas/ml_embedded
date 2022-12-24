@@ -11,6 +11,6 @@ file(
 )
 
 add_executable(
-	prediction_genre_musical
+	main
 	${source_files}
 )

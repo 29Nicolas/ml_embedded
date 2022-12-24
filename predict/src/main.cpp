@@ -137,17 +137,6 @@ void normalisation(double mu[], double sigma[], double means[], double scales[])
     }
 }
 
-void traitementDecisionTree(string file_path, double mu[], double sigma[]){
-	string path_model = "../model/model_DecisionTreeClassifier_ml.csv";
-	double means[2*N]; 
-	double scales[2*N];
-	ifstream f(path_model);
-	lectureModelNormalisation(f, means, scales);
-
-	normalisation(mu, sigma, means, scales);
-	int a = decision_tree(mu, sigma);
-}
-
 void produitMatricielSoustraction(double A[][1024], double B[], double D[], double resultat[]){
 	double c; 
 	for(int i=0; i<10; i++){
@@ -186,6 +175,18 @@ void lectureMatriceSvc(ifstream &f, double A[][1024], double intercept[]){
 	}
 }
 
+// int maxTableau(double tableau[10]){
+// 	double max = tableau[0];
+// 	int index_max = 0;
+// 	for(int i=0;i<10;i++){
+// 		if(max<tableau[i]){
+// 			index_max = i;
+// 			max = tableau[i];
+// 		}
+// 	}
+// 	return index_max;
+// }
+
 void lectureLabel(ifstream &f, map<int, string> &label){
 	if(f.is_open()){
 		string str;
@@ -208,57 +209,47 @@ void lectureLabel(ifstream &f, map<int, string> &label){
 	}
 }
 
-void traitementSvc(string file_path, double mu[], double sigma[]){
-	string path_model = "../model/model_svm.csv";
-	double means[2*N]; 
-	double scales[2*N];
-	ifstream f(path_model);
-	lectureModelNormalisation(f, means, scales);
-	normalisation(mu, sigma, means, scales);
+int linearSVC(ifstream &f, double mu[], double sigma[]){
 	double descripteur[1024];
-	transformationMatriceB(descripteur, mu, sigma);
 	double coef[10][1024];
 	double intercept[10];
-	lectureMatriceSvc(f, coef, intercept);
-
 	map<int, string> label;
+	double resultat[10];
+
+	//lecture des donnees du modele
+	transformationMatriceB(descripteur, mu, sigma);
+	lectureMatriceSvc(f, coef, intercept);
 	lectureLabel(f, label);
 
-	double resultat[10];
+	//prediction du genre de la musique
 	produitMatricielSoustraction(coef, descripteur, intercept, resultat);
-
-	double max_resultat = resultat[0];
-	int index_max = 0;
-	for(int j = 0; j< 10; j++){
-		if(max_resultat < resultat[j]){
-			max_resultat = resultat[j];
-			index_max = j;
-		}
-	}
-	cout << label[index_max] << endl;
-}
-
-void traitementRandomForest(string file_path, double mu[], double sigma[]){
-	// cout << "random Forest" << endl;
-	string path_model = "../model/modelRandomForest.csv";
-	double means[2*N]; 
-	double scales[2*N];
-	ifstream f(path_model);
-	lectureModelNormalisation(f, means, scales);
-
-	normalisation(mu, sigma, means, scales);
-	int a = randomForest(mu, sigma);
+	int resultat_max = maxTableau(resultat);
+	cout << label[resultat_max] << endl;
+	return resultat_max;
 }
 
 int main(int argc, char** argv){
 
+	//chemin vers les echantillons de musique et les modeles
 	string file_path = "../../archive/genres/";
+	string path_modelDecisionTree = "../model/model_DecisionTreeClassifier_ml.csv";
+	string path_modelRandomForest = "../model/modelRandomForest.csv";
+	string path_modelSVC = "../model/model_svm.csv";
 
+	// different model d'ia (choix dans le 2eme argument de l'executable)
+	vector<char*> model;
+	int nb_model = 2;
+	model.push_back("decisionTree");
+	model.push_back("svc");
+	model.push_back("randomForest");
+
+	// premier argument: nom de la musique a traiter
 	if(argc == 1){
-		cout << "choisir la musique a traité" << endl;
+		cout << "choisir la musique a traiter" << endl;
 		return 0;
 	}
 
+	//recuperation du chemin de la musique
 	string mus = argv[1];
 	int i = 0;
 	char caract = mus[i];
@@ -269,30 +260,45 @@ int main(int argc, char** argv){
 	}
 	file_path = file_path + '/' + argv[1] + ".au";
 
-	vector<char*> model;
-	int nb_model = 2;
-	model.push_back("decisionTree");
-	model.push_back("svc");
-	model.push_back("randomForest");
-
+	//2e argument: nom du modele d'ia a utiliser (possible de choisir plusieurs modeles en meme temps)
 	if(argc == 2){
 		cout << "choisir le model d'IA à utiliser" << endl;
 	}
 	else{
-		double mu[N];
-		double sigma[N];
-		extraction_descripteur(file_path, mu, sigma);
+		//traitement de chaque modele
 		for (int i = 2; i < argc; ++i){
+			//declaration des variables utiles
+			double mu[N];
+			double sigma[N];
+			double means[2*N]; 
+			double scales[2*N];
+			
+			//extraction des descripteurs (methode commune pour tous les modeles)
+			extraction_descripteur(file_path, mu, sigma);
+
 			if(*argv[i] == *model[0]){
-				traitementDecisionTree(file_path, mu, sigma);
+				// Decision Tree
+				ifstream f(path_modelDecisionTree);
+				lectureModelNormalisation(f, means, scales);
+				normalisation(mu, sigma, means, scales);
+				int a = decision_tree(mu, sigma);
 			}
 			else if(*argv[i] == *model[1]){
-				traitementSvc(file_path, mu, sigma);
+				// SVM
+				ifstream f(path_modelSVC);
+				lectureModelNormalisation(f, means, scales);
+				normalisation(mu, sigma, means, scales);
+				int a = linearSVC(f, mu, sigma);
 			}
 			else if(*argv[i] == *model[2]){
-				traitementRandomForest(file_path, mu, sigma);
+				// Random Forest
+				ifstream f(path_modelRandomForest);
+				lectureModelNormalisation(f, means, scales);
+				normalisation(mu, sigma, means, scales);
+				int a = randomForest(mu, sigma);
 			}
 			else{
+				//enregistrement des descripteurs dans un CSV pour être traité ailleurs
 				ofstream f1("../script/descripteur.csv");
 				for(int i=0; i<512; i++){
 					f1 << mu[i]; 
