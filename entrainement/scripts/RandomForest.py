@@ -84,6 +84,14 @@ txt +="max = tableau[i];"
 txt += "}}return index_max;}\n"
 txt +="\n"
 
+##Fonction affichage resultat genre musical
+txt += "void affichageResultat(int indexMaxGenres){\n"
+txt += "switch(indexMaxGenres){"
+for i in range(len(RandomForest_ml['randomforestclassifier'].classes_)):
+    txt += "case " + str(i) +" :\n"
+    txt += "cout << \"" + RandomForest_ml['randomforestclassifier'].classes_[i] + "\" << endl;break;\n"
+txt += "}}\n \n"
+
 ##Fonction Forest
 txt += "int randomForest(double mu[], double sigma[]){\n"
 txt += "double genres[10] = {0};\n"
@@ -91,6 +99,7 @@ for i in range(nb_arbre):
     txt += "genres[decision_tree_" + str(i) + "(mu, sigma)]++;\n";
 
 txt += "int indexMaxGenres = maxTableau(genres);\n"
+txt += "affichageResultat(indexMaxGenres);"
 txt += "return indexMaxGenres;\n"
 txt += "}"
 
@@ -104,6 +113,7 @@ txt = "#ifndef CODE__H \n#define CODE__H \n"
 for i in range(nb_arbre):
     txt += "int decision_tree_" + str(i) + "(double mu[], double sigma[]);\n"
 txt += "int maxTableau(double tableau[10]);\n"
+txt += "void affichageResultat(int indexMaxGenres);\n"
 txt += "int randomForest(double mu[], double sigma[]);\n"
 txt += "#endif"
 fichier = open("../../predict/src/codeRandomForest.h", "w")

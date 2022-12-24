@@ -101,5 +101,6 @@ int decision_tree_97(double mu[], double sigma[]);
 int decision_tree_98(double mu[], double sigma[]);
 int decision_tree_99(double mu[], double sigma[]);
 int maxTableau(double tableau[10]);
+void affichageResultat(int indexMaxGenres);
 int randomForest(double mu[], double sigma[]);
 #endif
