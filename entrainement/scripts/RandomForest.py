@@ -39,13 +39,14 @@ unique_label = np.unique(label_names)
 feature_values = data[:, :1024]
 
 # split données
-# X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
+X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
 
 
 # Random Forest
 RandomForest_ml = make_pipeline(preprocessing.StandardScaler(), RandomForestClassifier(n_estimators=100))
-RandomForest_ml.fit(feature_values, label_names)
-# RandomForest_ml.score(X_test, y_test)
+RandomForest_ml.fit(X_train, y_train)
+score = RandomForest_ml.score(X_test, y_test)
+print("score random forest : ", score)
 # print(len(RandomForest_ml['randomforestclassifier'].estimators_))
 nb_arbre = 100
 

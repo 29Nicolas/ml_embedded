@@ -40,12 +40,13 @@ unique_label = np.unique(label_names)
 feature_values = data[:, :1024]
 
 # split données
-# X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
+X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names, test_size=0.33, random_state=43)
 
 # Decision Tree Classifier: entrainement de l'IA
 DecisionTreeClassifier_ml = make_pipeline(preprocessing.StandardScaler(), DecisionTreeClassifier())
-DecisionTreeClassifier_ml.fit(feature_values, label_names)
-# DecisionTreeClassifier_ml.score(X_test, y_test)
+DecisionTreeClassifier_ml.fit(X_train, y_train)
+score = DecisionTreeClassifier_ml.score(X_test, y_test)
+print("score : ", score)
 clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
 
 
