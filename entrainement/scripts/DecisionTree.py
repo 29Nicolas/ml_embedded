@@ -75,7 +75,7 @@ fichier.write(txt)
 fichier.close()
 
 ## ecriture du h
-txt = "#ifndef CODE__H \n#define CODE__H \nint decision_tree(double mu[], double sigma[]);\n#endif"
+txt = "#ifndef CODE_DECISION_TREE__H \n #define CODE_DECISION_TREE_H \nint decision_tree(double mu[], double sigma[]);\n#endif"
 fichier = open("../../predict/src/codeDecisionTree.h", "w")
 fichier.write(txt)
 fichier.close()

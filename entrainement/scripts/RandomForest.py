@@ -110,7 +110,7 @@ fichier.write(txt)
 fichier.close()
 
 ## ecriture du h
-txt = "#ifndef CODE__H \n#define CODE__H \n"
+txt = "#ifndef CODE_RANDOM_FOREST__H \n#define CODE_RANDOM_FOREST__H \n"
 for i in range(nb_arbre):
     txt += "int decision_tree_" + str(i) + "(double mu[], double sigma[]);\n"
 txt += "int maxTableau(double tableau[10]);\n"
