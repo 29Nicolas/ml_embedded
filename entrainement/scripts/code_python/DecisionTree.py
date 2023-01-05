@@ -1,9 +1,11 @@
 import csv
 import numpy as np
 from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.tree import DecisionTreeClassifier
+from usefulCmdsAndFcns import get_metrics, plot_confusion_matrix
+from sklearn.model_selection import train_test_split, cross_val_score
+import matplotlib.pyplot as plt
 
 
 def lecture_node(i):
@@ -48,6 +50,13 @@ DecisionTreeClassifier_ml.fit(X_train, y_train)
 score = DecisionTreeClassifier_ml.score(X_test, y_test)
 print("score : ", score)
 clf = DecisionTreeClassifier_ml['decisiontreeclassifier']
+
+# evaluation du modele
+plot_confusion_matrix(y_test,DecisionTreeClassifier_ml.predict(X_test))
+get_metrics(y_test,DecisionTreeClassifier_ml.predict(X_test))
+scores = cross_val_score(DecisionTreeClassifier_ml, X_test, y_test)
+print("Scores Decision Tree: ",scores.mean())
+plt.show()
 
 
 ## enregistrement de la normalisation

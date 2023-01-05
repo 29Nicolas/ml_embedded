@@ -4,6 +4,8 @@ from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import make_pipeline
 from sklearn.svm import LinearSVC
+from usefulCmdsAndFcns import get_metrics, plot_confusion_matrix
+from sklearn.model_selection import train_test_split, cross_val_score
 
 
 with open('../../predict/model/output.csv', newline='') as csvfile:
@@ -19,10 +21,16 @@ X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names,
 # SVM
 svm = make_pipeline(preprocessing.StandardScaler(), LinearSVC())
 svm.fit(X_train, y_train)
-score = svm.score(X_test, y_test)
-print("score : ", score)
+# score = svm.score(X_test, y_test)
+# print("score : ", score)
 
-# open the file in the write mode
+# evaluation du modele
+plot_confusion_matrix(y_test,svm.predict(X_test))
+get_metrics(y_test,svm.predict(X_test))
+scores = cross_val_score(svm, X_test, y_test)
+print("Scores SVM: ",scores.mean())
+
+# enregistrement du modele
 with open('../../predict/model/model_svm.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)

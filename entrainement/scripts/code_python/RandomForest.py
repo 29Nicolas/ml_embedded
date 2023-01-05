@@ -1,7 +1,8 @@
 import csv
 import numpy as np
 from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
+from usefulCmdsAndFcns import get_metrics, plot_confusion_matrix
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.pipeline import make_pipeline
 from sklearn.ensemble import RandomForestClassifier
 
@@ -45,11 +46,16 @@ X_train, X_test, y_train, y_test = train_test_split(feature_values, label_names,
 # Random Forest
 RandomForest_ml = make_pipeline(preprocessing.StandardScaler(), RandomForestClassifier(n_estimators=100))
 RandomForest_ml.fit(X_train, y_train)
-score = RandomForest_ml.score(X_test, y_test)
-print("score random forest : ", score)
+# score = RandomForest_ml.score(X_test, y_test)
+# print("score random forest : ", score)
 # print(len(RandomForest_ml['randomforestclassifier'].estimators_))
 nb_arbre = 100
 
+# evaluation du modele
+plot_confusion_matrix(y_test,RandomForest_ml.predict(X_test))
+get_metrics(y_test,RandomForest_ml.predict(X_test))
+scores = cross_val_score(RandomForest_ml, X_test, y_test)
+print("Scores RandomForest: ",scores.mean())
 
 ## enregistrement de la normalisation
 # open the file in the write mode
