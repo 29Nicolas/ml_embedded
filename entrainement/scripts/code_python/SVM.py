@@ -8,7 +8,7 @@ from usefulCmdsAndFcns import get_metrics, plot_confusion_matrix
 from sklearn.model_selection import train_test_split, cross_val_score
 
 
-with open('../../predict/model/output.csv', newline='') as csvfile:
+with open('../../../predict/model/output.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
 data = np.array(data)
 
@@ -31,7 +31,7 @@ scores = cross_val_score(svm, X_test, y_test)
 print("Scores SVM: ",scores.mean())
 
 # enregistrement du modele
-with open('../../predict/model/model_svm.csv', 'w', encoding='UTF8') as f:
+with open('../../../predict/model/model_svm.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
 

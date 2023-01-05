@@ -31,7 +31,7 @@ def lecture_node(i):
 
 ## lecture du fichier contenant les descripteurs
 # extraction des informations du csv
-with open('../../predict/model/output.csv', newline='') as csvfile:
+with open('../../../predict/model/output.csv', newline='') as csvfile:
     data = list(csv.reader(csvfile))
 data = np.array(data)
 
@@ -59,7 +59,7 @@ print("Scores RandomForest: ",scores.mean())
 
 ## enregistrement de la normalisation
 # open the file in the write mode
-with open('../../predict/model/modelRandomForest.csv', 'w', encoding='UTF8') as f:
+with open('../../../predict/model/modelRandomForest.csv', 'w', encoding='UTF8') as f:
     # create the csv writer
     writer = csv.writer(f)
     # write a row to the csv file
@@ -111,7 +111,7 @@ txt += "return indexMaxGenres;\n"
 txt += "}"
 
 # écriture du code dans le fichier
-fichier = open("../../predict/src/codeRandomForest.cpp", "w")
+fichier = open("../../../predict/src/codeRandomForest.cpp", "w")
 fichier.write(txt)
 fichier.close()
 
@@ -123,6 +123,6 @@ txt += "int maxTableau(double tableau[10]);\n"
 txt += "void affichageResultat(int indexMaxGenres);\n"
 txt += "int randomForest(double mu[], double sigma[]);\n"
 txt += "#endif"
-fichier = open("../../predict/src/codeRandomForest.h", "w")
+fichier = open("../../../predict/src/codeRandomForest.h", "w")
 fichier.write(txt)
 fichier.close()

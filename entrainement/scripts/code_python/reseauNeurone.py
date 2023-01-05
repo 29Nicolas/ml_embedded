@@ -11,7 +11,7 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropou
 
 
 ## importer les data
-data = pd.read_csv('../../predict/model/output.csv')
+data = pd.read_csv('../../../predict/model/output.csv')
 data = np.array(data.values)
 label_names = data[:,1024]
 unique_label = np.unique(label_names)
@@ -91,7 +91,7 @@ converter = tf.lite.TFLiteConverter.from_keras_model(model)
 tflite_model = converter.convert()
 
 # Save the model.
-with open('../../predict/model/model.tflite', 'wb') as f:
+with open('../../../predict/model/model.tflite', 'wb') as f:
   f.write(tflite_model)
 
 
