@@ -3,3 +3,4 @@ archive.zip
 archive/genres
 __pycache__
 vultr-tensorflow
+.vscode/
