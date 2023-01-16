@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "constants.h"
-#include "fft_utils.h"
+#include "../../Support-20221129/C++/constants.h"
+#include "../../Support-20221129/C++/fft_utils.h"
 #include <complex>
 #include <filesystem>
 #include <dirent.h>
@@ -190,7 +190,7 @@ vector<string> extraction_nom_fichier(string path, int &nb_fichier){
 int main(){
 	string file_path = "../../archive/genres/";
 
-	string file_o_name = "../../predict/model/output.csv";
+	string file_o_name = "../../inference/dataset.csv";
 	ofstream file_o;
 	file_o.open(file_o_name);
 
