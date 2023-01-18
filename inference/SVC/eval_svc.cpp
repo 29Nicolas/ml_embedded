@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <eigen3/Eigen/Dense>
-#include "../utils/extraction_descripteur.h"
+#include "test_dataset.h"
 #include <complex>
 #include <map>
 
@@ -10,17 +10,17 @@ using namespace std;
 void lectureModelNormalisation(ifstream &f, Eigen::VectorXd& means, Eigen::VectorXd& scales){
 	if(f.is_open()){
 		char virgule;
-		for(int i = 0; i<(2*N)-1; i++){
+		for(int i = 0; i<(N_FEATURES)-1; i++){
 			f >> scales(i);
 			f >> virgule;
 		}
-		f >> scales(2*N-1);
+		f >> scales(N_FEATURES-1);
 		
-		for(int i=0; i<2*N-1; i++){
+		for(int i=0; i<N_FEATURES-1; i++){
 			f >> means(i); 
 			f >> virgule;
 		}
-		f >> means(2*N-1);
+		f >> means(N_FEATURES-1);
 	}
 }
 
@@ -65,35 +65,19 @@ void lectureModel(ifstream &f, Eigen::MatrixXd& coef, Eigen::VectorXd& intercept
 }
 
 int main(int argc, char** argv){
-    //chemin vers les echantillons de musique et les modeles
-	string file_path = "../../archive/genres/";
+    //chemin le modele
 	string path_modelSVC = "model_svm.csv";
 
-	// premier argument: nom de la musique a traiter
-	if(argc == 1){
-		cout << "choisir la musique a traiter" << endl;
-		return 0;
-	}
-
-	//recuperation du chemin de la musique
-	string mus = argv[1];
-	int i = 0;
-	char caract = mus[i];
-	while(caract != '.'){
-		i++;
-		file_path += caract;
-		caract = mus[i];
-	}
-	file_path = file_path + '/' + argv[1] + ".au";
-
 	// déclaration des variables
-	Eigen::VectorXd descripteur(2*N);
-	Eigen::VectorXd means(2*N);
-	Eigen::VectorXd scales(2*N);
-	Eigen::MatrixXd coef(10, 2*N);
+	Eigen::VectorXd descripteur(N_FEATURES);
+	Eigen::VectorXd means(N_FEATURES);
+	Eigen::VectorXd scales(N_FEATURES);
+	Eigen::MatrixXd coef(10, N_FEATURES);
 	Eigen::VectorXd intercept(10);
 	Eigen::VectorXd result(10);
 	map<int, string> label;
+	Eigen::Index indice;
+	int match = 0;
 
 	// lecture des informations dans le fichier csv
 	ifstream f(path_modelSVC);
@@ -101,24 +85,28 @@ int main(int argc, char** argv){
 	lectureModel(f, coef, intercept);
 	lectureLabel(f, label);
 
-    //declaration des variables utiles
-    double mu[N];
-    double sigma[N];
-    
-    //extraction des descripteurs
-    extraction_descripteur(file_path, mu, sigma);
+	clock_t begin=clock();
 
-	// normalisation + mise en forme pour l'application du modele
-	for(int k=0; k< N; k++){
-		descripteur(k) = (mu[k]-means(k))/scales(k);
-		descripteur(k+N) = (sigma[k]-means(k+N))/scales(k+N);
+	for(int i=0; i<N_TEST_EXAMPLES; i++){
+		// normalisation + mise en forme pour l'application du modele
+		for(int k=0; k< N_FEATURES; k++){
+			descripteur(k) = (X_test[i][k]-means(k))/scales(k);
+		}
+
+		// prediction
+		result = coef*descripteur - intercept;
+		result.maxCoeff(&indice);
+
+		// evaluation prediction
+		if(indice == y_test[i]){
+			match++;
+		}
 	}
 
-	// prediction
-	result = coef*descripteur - intercept;
-
-	// affichage du resultat de la prediction
-	Eigen::Index indice;
-	result.maxCoeff(&indice);
-	cout << label[indice] << endl;
+	clock_t end=clock();
+	cout << "Match: " << match << endl;
+	cout << "Accuracy on training platform: " << test_acc << " %\n";
+	cout << "Accuracy on inference platform: " << float(match)/float(N_TEST_EXAMPLES) << " %\n";
+	cout << "Prediction time: " << double(end-begin)/CLOCKS_PER_SEC << "s\n";
+	return 1;
 }
