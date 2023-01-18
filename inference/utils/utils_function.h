@@ -10,6 +10,5 @@ using namespace std;
 
 void lectureModelNormalisation(ifstream &f, double means[], double scales[]);
 void normalisation(double mu[], double sigma[], double means[], double scales[]);
-int maxTableau(double tableau[10]);
 
 #endif

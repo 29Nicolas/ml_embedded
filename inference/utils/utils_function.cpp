@@ -23,15 +23,3 @@ void normalisation(double mu[], double sigma[], double means[], double scales[])
         sigma[i] = (sigma[i]-means[i+N])/scales[i+N];
     }
 }
-
-int maxTableau(double tableau[10]){
-	double max = tableau[0];
-	int index_max = 0;
-	for(int i=0;i<10;i++){
-		if(max<tableau[i]){
-			index_max = i;
-			max = tableau[i];
-		}
-	}
-	return index_max;
-}
