@@ -9,19 +9,19 @@
 La branche **main** contient l'ensemble des différents code de ce projet.
 
 * :file_folder: [/Support-20221129](Support-20221129) : **dossier contenant les codes fournis**
-$\qquad$ :file_folder: [C++](/Support-20221129/C++) : fonctions utiles pour l'extraction des descripteurs (fft)  
-$\qquad$ :file_folder: [Python](/Support-20221129/Python/) : check pour de l'extraction
+     *  :file_folder: [C++](/Support-20221129/C++) : fonctions utiles pour l'extraction des descripteurs (fft)  
+     *  :file_folder: [Python](/Support-20221129/Python/) : check pour de l'extraction
 * :file_folder: [/entrainement](entrainement) : **codes de la plateforme d'entrainement**  
-$\qquad$ :file_folder: [/entrainement/creation_dataset](entrainement/creation_dataset) :  contient le code permettant l'extraction des descripteurs de l'ensemble des données  
-$\qquad$ :file_folder: [/entrainement/model](entrainement/model) : contient les codes d'entrainement et d'évaluation des modèles (en jupyter notebook)
+    * :file_folder: [/entrainement/creation_dataset](entrainement/creation_dataset) :  contient le code permettant l'extraction des descripteurs de l'ensemble des données  
+    * :file_folder: [/entrainement/model](entrainement/model) : contient les codes d'entrainement et d'évaluation des modèles (en jupyter notebook)
 
 * :file_folder: [/inference](inference) : **dossier contenant les codes pour la prédiction sur la plateforme d'inférence**  
-$\qquad$ :file_folder: [/predict/utils](predict/utils) :contient des fonctions communes à plusieurs modèles comme les codes utiles fournis (fft).  
-$\qquad$ :page_facing_up: [dataset.csv](dataset.csv) : contient les descripteurs de tous les individus de l'ensemble des données.  
-$\qquad$ :file_folder: [/inference/SVC](predict/SVC) : contient les codes pour l'utilisation du modèle SVC  
-$\qquad$ :file_folder: [/predict/DecisionTree](predict/DecisionTree) : contient les codes pour l'utilisation du modèle Decision Tree  
-$\qquad$ :file_folder: [/predict/RandomForest](predict/RandomForest) : contient les codes pour l'utilisation du modèle Random Forest  
-$\qquad$ :file_folder: [/predict/NeuronalNetwork](predict/NeuronalNetwork) : contient les codes pour l'utilisation du modèle Neuronal Network  
+     *  :file_folder: [/predict/utils](predict/utils) :contient des fonctions communes à plusieurs modèles comme les codes utiles fournis (fft).  
+     *  :page_facing_up: [dataset.csv](dataset.csv) : contient les descripteurs de tous les individus de l'ensemble des données.  
+     *  :file_folder: [/inference/SVC](predict/SVC) : contient les codes pour l'utilisation du modèle SVC  
+     *  :file_folder: [/predict/DecisionTree](predict/DecisionTree) : contient les codes pour l'utilisation du modèle Decision Tree  
+     *  :file_folder: [/predict/RandomForest](predict/RandomForest) : contient les codes pour l'utilisation du modèle Random Forest  
+     *  :file_folder: [/predict/NeuronalNetwork](predict/NeuronalNetwork) : contient les codes pour l'utilisation du modèle Neuronal Network  
 
 Dans chaque répertoire de modèle, on retrouve :  
 - 'predict_<nom_modele>.cpp' permettant de prédire le genre musical de la musique souhaité
