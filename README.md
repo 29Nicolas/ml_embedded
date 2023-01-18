@@ -12,12 +12,25 @@ La branche **main** contient l'ensemble des différents code de ce projet.
 $\qquad$ :file_folder: [C++](/Support-20221129/C++) : fonctions utiles pour l'extraction des descripteurs (fft)  
 $\qquad$ :file_folder: [Python](/Support-20221129/Python/) : check pour de l'extraction
 * :file_folder: [/entrainement](entrainement) : **codes de la plateforme d'entrainement**  
-$\qquad$ :file_folder: [/entrainement/src](entrainement/src) :  contient le code permettant l'extraction des descripteurs de l'ensemble des données  
-$\qquad$ :file_folder: [/entrainement/scripts](entrainement/scripts) : contient les codes d'entrainement et d'évaluation des modèles (en jupyter notebook, code au format python disponible dans le dossier /entrainement/scripts/code_python)
+$\qquad$ :file_folder: [/entrainement/creation_dataset](entrainement/creation_dataset) :  contient le code permettant l'extraction des descripteurs de l'ensemble des données  
+$\qquad$ :file_folder: [/entrainement/model](entrainement/model) : contient les codes d'entrainement et d'évaluation des modèles (en jupyter notebook)
 
-* :file_folder: [/predict](predict) : **dossier contenant les codes pour la prédiction sur la plateforme d'inférence**  
-$\qquad$ :file_folder: [/predict/model](predict/model) : contient les modèles enregistrés sur la plateforme d'entrainement  
-$\qquad$ :file_folder: [/predict/src](predict/src) : contient les différents codes de prédiction et d'évaluation des modèles (ainsi que les codes utiles fournis (fft)).
+* :file_folder: [/inference](inference) : **dossier contenant les codes pour la prédiction sur la plateforme d'inférence**  
+$\qquad$ :file_folder: [/predict/utils](predict/utils) :contient des fonctions communes à plusieurs modèles comme les codes utiles fournis (fft).  
+$\qquad$ :page_facing_up: [dataset.csv](dataset.csv) : contient les descripteurs de tous les individus de l'ensemble des données.  
+$\qquad$ :file_folder: [/inference/SVC](predict/SVC) : contient les codes pour l'utilisation du modèle SVC  
+$\qquad$ :file_folder: [/predict/DecisionTree](predict/DecisionTree) : contient les codes pour l'utilisation du modèle Decision Tree  
+$\qquad$ :file_folder: [/predict/RandomForest](predict/RandomForest) : contient les codes pour l'utilisation du modèle Random Forest  
+$\qquad$ :file_folder: [/predict/NeuronalNetwork](predict/NeuronalNetwork) : contient les codes pour l'utilisation du modèle Neuronal Network  
+
+Dans chaque répertoire de modèle, on retrouve :  
+- 'predict_<nom_modele>.cpp' permettant de prédire le genre musical de la musique souhaité
+- 'eval_<nom_modele>.cpp' permettant d'évaluer l'accuracy et la comparer avec celle obtenue sur la plateforme d'apprentissage.
+- 'test_dataset.h', fichier contenant l'ensemble de test identique à la plateforme d'apprentissage pour pouvoir comparer les performances
+- makefile.sh : contenant les lignes de commande pour compiler les codes avec g++
+- fichiers contenant le modèle appris (code cpp/h et/ou csv ou ...)
+
+
 
 
 ## Travail effectué
@@ -75,54 +88,35 @@ Le répertoire contient les différents fichiers temporaires crées comme celui 
 
 * Ensuite, passer à l'extraction des descripteurs des données :
 ````bash
-mkdir -p entrainement/build
-cd entrainement/build
-cmake ..
-make
-./main 
-cd ../..
+cd entrainement/creation_dataset
+chmod +x creation_dataset.sh
 ````
-Ce programme crée le fichier **[output.csv](predict/model/output.csv)** dans le répertoire [/predict/model](predict/model/)
+Ce programme crée le fichier **[dataset.csv](inference/dataset.csv)** dans le répertoire [/inference](inference)
 
-* Créer, entrainer et évaluer les différents modèles:  
-2 méthodes sont possible:  
-$\qquad$ - ouvrir les jupyter notebook de chaque modèle ranger dans le dossier [/entrainement/scripts](/entrainement/scripts)  
-$\qquad$ - utiliser les codes au format .py:
-````bash
-cd entrainement/scritps/code_python
-python3 DecisionTree.py
-python3 RandomForest.py
-python3 SVM.py
-python3 reseauNeurone.py
-cd ../../..
-````
-Ces programmes vont enregistrer les modèles entrainés dans le répertoire [/predict/model](predict/model/) et les codes générés dans le répertoire [/predict/src](/predict/src/). A cette étape, on peut voir les performances des modèles par leur évaluation.
+* Créer, entrainer et évaluer les différents modèles en ouvrant les jupyter notebook de chaque modèle ranger dans le dossier [/entrainement/model](/entrainement/model)  
+
+Ces programmes vont enregistrer les modèles entrainés et les codes générés dans leur répertoire respectif de [/inference/](inference/). A cette étape, on peut voir les performances des modèles par leur évaluation.
 
 **L'entrainement est terminer**
 
-## Build la prédiction
+## Utilisation des modèles sur la plateforme d'inférence
 
-* Copier les dossiers [/predict](/predict/) sur l'ordinateur embarqué (Rpi) 
+* Copier les dossiers [/inference](/inference/) sur l'ordinateur embarqué (Rpi) 
 
-* Compiler le code cpp: 
+* Choisir le dossier du modèle souhaité entre SVC, DecisionTree, RandomForest et NeuronalNetwork.
+
+* Générer les exécutables pour réaliser la prédiction et l'évaluation du modèle:
 ````bash
-mkdir -p predict/build
-cd predict/build
-cmake ..
-make
+chmod +x makefile.sh; 
+./makefile.sh
 ````
-* Prédire le genre de l'audio souhaité en utilisant le modèle souhaité : 
-````bash 
-./ main <nom_audio_sans_extension> <nom_modele> <nom_modele> 
-````
-nom_modele sont : 
- - decisionTree
- - svc
- - randomForest
 
- Pour utiliser le réseau de neurone, il faut copier le fichier [/predict/model/model.tflite](/predict/model/model.tflite) et l'ensemble de test [/predict/model/test_dataset.h](/predict/model/test_dataset.h) dans le dossier /exemple de la carte rpi (avec l'image du projet contenant tensorflow lite).  
- Puis build, par la commande g++ écrite dans le fichier 'makefile'.  
- Enfin, prédire et évaluer le modèle en exécutant : 
- ```bash
- ./output
- ```
+* Pour évaluer la performance et la comparer avec la plateforme d'apprentissage (normalement égale):
+````bash
+./eval
+````
+
+* Il est aussi possible de prédire le genre d'un audio souhaité mais il faut avoir le fichier audio dans le repertoire archive/genres/nom_genre/fichier_audio avec archive au même niveau que inference (utiliser pour débogguer pendant le dev): 
+````bash 
+./predict <nom_audio_sans_extension>
+````
