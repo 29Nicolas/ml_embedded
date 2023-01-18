@@ -39,6 +39,7 @@ int main(int argc, char** argv){
         }
     }
     clock_t end=clock();
+    cout << endl << endl;
 	std::cout << "Match: " << match << std::endl;
 	std::cout << "Accuracy on training platform: " << test_acc << " %\n";
 	std::cout << "Accuracy on inference platform: " << float(match)/float(N_TEST_EXAMPLES) << " %\n";
