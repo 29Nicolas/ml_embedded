@@ -16,7 +16,7 @@ int main(){
 
 	float max_score=0;
 
-	auto model=tflite::FlatBufferModel::BuildFromFile("modelNeuronalNetwork.tflite");
+	auto model=tflite::FlatBufferModel::BuildFromFile("model.tflite");
 
 	tflite::ops::builtin::BuiltinOpResolver resolver;
 	std::unique_ptr<tflite::Interpreter> interpreter;
