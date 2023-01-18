@@ -1,0 +1,2 @@
+g++ -std=c++11 -o output -I/home/pi/tensorflow evalNeuronalNetwork.cpp libtensorflow-lite.a -pthread -lrt -ldl
+g++ -std=c++11 -o output_optimizer -I/home/pi/tensorflow evalNeuronalNetworkOptimize.cpp libtensorflow-lite.a -pthread -lrt -ldl
