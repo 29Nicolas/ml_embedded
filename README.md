@@ -103,7 +103,7 @@ Ces programmes vont enregistrer les modèles entrainés et les codes générés 
 
 * Copier les dossiers [/inference](/inference/) sur l'ordinateur embarqué (Rpi) 
 
-* Choisir le dossier du modèle souhaité entre SVC, DecisionTree, RandomForest et NeuronalNetwork.
+* Choisir le dossier du modèle souhaité entre SVC, DecisionTree, RandomForest.
 
 * Générer les exécutables pour réaliser la prédiction et l'évaluation du modèle:
 ````bash
@@ -120,3 +120,17 @@ chmod +x makefile.sh;
 ````bash 
 ./predict <nom_audio_sans_extension>
 ````
+
+* Pour le réseau de neurone, se placer dans le répertoire associé puis compiler les codes:
+````bash
+cd NeuronalNetwork
+./makefile.sh
+````
+ pour évaluer les performances avec le modèle non optimisé :
+ ````bash
+ ./output
+ ````
+ pour le modèle optimisé (qui ne fonctionne pas à cause d'un problème de version de tensorflowlite)
+ ````bash
+ ./output_optimizer 
+ ````
